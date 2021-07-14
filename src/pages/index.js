@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import MainGrid from '../components/MainGrid'
 import Box from '../components/Box'
@@ -48,6 +48,8 @@ export default function Home() {
     },
   ])
 
+  const [followers, setFollowers] = useState([])
+
   function handleCriarComunidade(event) {
     event.preventDefault()
 
@@ -60,6 +62,12 @@ export default function Home() {
 
     setComunidades([...comunidades, comunidade])
   }
+
+  useEffect(() => {
+    fetch(`http://api.github.com/users/${githubUser}/followers`)
+      .then(response => response.json())
+      .then(data => setFollowers(data))
+  }, [])
 
   return (
     <>
@@ -125,6 +133,23 @@ export default function Home() {
                       alt={pessoa}
                     />
                     <span>{pessoa}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </ProfileRelationsBoxWrapper>
+
+          <ProfileRelationsBoxWrapper>
+            <h2 className="smallTitle">Seguidores ({followers.length})</h2>
+            <ul>
+              {followers.map(follower => (
+                <li key={`${follower.login}-${follower.id}`}>
+                  <a href={`users/${follower.login}`}>
+                    <img
+                      src={`https://github.com/${follower.login}.png`}
+                      alt={follower.login}
+                    />
+                    <span>{follower.login}</span>
                   </a>
                 </li>
               ))}
