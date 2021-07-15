@@ -1,3 +1,4 @@
+/* E-mail Dato CMS: voyetig768@eyeremind.com */
 import { useState, useEffect } from 'react'
 
 import MainGrid from '../components/MainGrid'
@@ -41,12 +42,7 @@ export default function Home() {
     'felipefialho',
   ]
 
-  const [comunidades, setComunidades] = useState([
-    {
-      title: 'Eu odeio acordar cedo',
-      image: 'https://alurakut.vercel.app/capa-comunidade-01.jpg',
-    },
-  ])
+  const [comunidades, setComunidades] = useState([])
 
   const [followers, setFollowers] = useState([])
 
@@ -57,16 +53,49 @@ export default function Home() {
 
     const comunidade = {
       title: dadosDoForm.get('title'),
-      image: dadosDoForm.get('image'),
+      imageUrl: dadosDoForm.get('image'),
+      creatorSlug: githubUser,
     }
 
-    setComunidades([...comunidades, comunidade])
+    fetch('/api/comunidades', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(comunidade),
+    }).then(async res => {
+      const data = await res.json()
+      setComunidades([...comunidades, data.record])
+    })
   }
 
   useEffect(() => {
     fetch(`http://api.github.com/users/${githubUser}/followers`)
       .then(response => response.json())
       .then(data => setFollowers(data))
+
+    fetch('https://graphql.datocms.com/', {
+      method: 'POST',
+      headers: {
+        Authorization: process.env.NEXT_PUBLIC_DATOCMS_API_KEY,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        query: `query {
+            allCommunities {
+              id
+              title
+              imageUrl
+              creatorSlug
+              _status
+              _firstPublishedAt
+            }
+          }`,
+      }),
+    })
+      .then(res => res.json())
+      .then(res => setComunidades(res.data.allCommunities))
   }, [])
 
   return (
@@ -109,10 +138,10 @@ export default function Home() {
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">Comunidades ({comunidades.length})</h2>
             <ul>
-              {comunidades.map((comunidade, key) => (
-                <li key={`${comunidade.title}-${key}`}>
-                  <a href="/#">
-                    <img src={comunidade.image} alt={comunidade.title} />
+              {comunidades.map(comunidade => (
+                <li key={`${comunidade.title}-${comunidade.id}`}>
+                  <a href={`/comunities/${comunidade.id}`}>
+                    <img src={comunidade.imageUrl} alt={comunidade.title} />
                     <span>{comunidade.title}</span>
                   </a>
                 </li>
