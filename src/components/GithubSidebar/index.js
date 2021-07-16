@@ -11,7 +11,7 @@ export default function GithubSidebar({ type, githubUser }) {
 
   useEffect(() => {
     setIsLoading(true)
-    fetch(`http://api.github.com/users/${githubUser}/${type}`)
+    fetch(`https://api.github.com/users/${githubUser}/${type}`)
       .then(response => response.json())
       .then(data => setFollowers(data))
       .finally(() => setIsLoading(false))
@@ -19,7 +19,7 @@ export default function GithubSidebar({ type, githubUser }) {
 
   useEffect(() => {
     setIsLoading(true)
-    fetch(`http://api.github.com/users/${githubUser}/${type}`)
+    fetch(`https://api.github.com/users/${githubUser}/${type}`)
       .then(response => response.json())
       .then(data => setFollowing(data))
       .finally(() => setIsLoading(false))
