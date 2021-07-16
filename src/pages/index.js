@@ -1,11 +1,14 @@
 /* E-mail Dato CMS: voyetig768@eyeremind.com */
 import { useState, useEffect } from 'react'
+import { ToastContainer, toast } from 'react-toastify'
 
 import MainGrid from '../components/MainGrid'
 import Box from '../components/Box'
 import ProfileSidebar from '../components/ProfileSidebar'
 import { ProfileRelationsBoxWrapper } from '../components/ProfileRelations'
 import { AlurakutMenu, OrkutNostalgicIconSet } from '../lib/AlurakutCommons'
+
+import 'react-toastify/dist/ReactToastify.css'
 
 export default function Home() {
   const githubUser = 'marcelosrp'
@@ -21,6 +24,7 @@ export default function Home() {
 
   const [comunidadeTitle, setComunidadeTitle] = useState('')
   const [comunidadeImageUrl, setComunidadeImageUrl] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const [comunidades, setComunidades] = useState([])
   const [followers, setFollowers] = useState([])
 
@@ -62,22 +66,31 @@ export default function Home() {
       creatorSlug: githubUser,
     }
 
+    setIsLoading(true)
+
     fetch('/api/comunidades', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(comunidade),
-    }).then(async res => {
-      const data = await res.json()
-      setComunidades([...comunidades, data.record])
-      setComunidadeTitle('')
-      setComunidadeImageUrl('')
     })
+      .then(async res => {
+        const data = await res.json()
+        setComunidades([...comunidades, data.record])
+        setComunidadeTitle('')
+        setComunidadeImageUrl('')
+        toast.success('Comunidade criada com sucesso!')
+      })
+      .catch(error => console.log(error))
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   return (
     <>
+      <ToastContainer position="bottom-right" />
       <AlurakutMenu githubUser={githubUser} />
       <MainGrid>
         <div className="profileArea" style={{ gridArea: 'profileArea' }}>
@@ -109,7 +122,9 @@ export default function Home() {
                   onChange={e => setComunidadeImageUrl(e.target.value)}
                 />
               </div>
-              <button type="submit">Criar comunidade</button>
+              <button disabled={isLoading} type="submit">
+                {isLoading ? 'Criando comunidade...' : 'Criar comunidade'}
+              </button>
             </form>
           </Box>
         </div>

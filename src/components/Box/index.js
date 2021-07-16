@@ -54,6 +54,11 @@ const Box = styled.div`
     color: #ffffff;
     border-radius: 10000px;
     background-color: #6f92bb;
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
   }
 `
 
