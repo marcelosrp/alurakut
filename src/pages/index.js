@@ -6,6 +6,8 @@ import MainGrid from '../components/MainGrid'
 import Box from '../components/Box'
 import ProfileSidebar from '../components/ProfileSidebar'
 import { ProfileRelationsBoxWrapper } from '../components/ProfileRelations'
+import GithubSidebar from '../components/GithubSidebar'
+
 import { AlurakutMenu, OrkutNostalgicIconSet } from '../lib/AlurakutCommons'
 
 import 'react-toastify/dist/ReactToastify.css'
@@ -17,20 +19,6 @@ export default function Home() {
   const [comunidadeImageUrl, setComunidadeImageUrl] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [comunidades, setComunidades] = useState([])
-  const [followers, setFollowers] = useState([])
-  const [following, setFollowing] = useState([])
-
-  useEffect(() => {
-    fetch(`http://api.github.com/users/${githubUser}/followers`)
-      .then(response => response.json())
-      .then(data => setFollowers(data))
-  }, [])
-
-  useEffect(() => {
-    fetch(`http://api.github.com/users/${githubUser}/following`)
-      .then(response => response.json())
-      .then(data => setFollowing(data))
-  }, [])
 
   useEffect(() => {
     fetch('https://graphql.datocms.com/', {
@@ -144,39 +132,8 @@ export default function Home() {
             </ul>
           </ProfileRelationsBoxWrapper>
 
-          <ProfileRelationsBoxWrapper>
-            <h2 className="smallTitle">Seguindo ({following.length})</h2>
-            <ul>
-              {following.map(follower => (
-                <li key={`${follower.login}-${follower.id}`}>
-                  <a href={`users/${follower.login}`}>
-                    <img
-                      src={`https://github.com/${follower.login}.png`}
-                      alt={follower.login}
-                    />
-                    <span>{follower.login}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </ProfileRelationsBoxWrapper>
-
-          <ProfileRelationsBoxWrapper>
-            <h2 className="smallTitle">Seguidores ({followers.length})</h2>
-            <ul>
-              {followers.map(follower => (
-                <li key={`${follower.login}-${follower.id}`}>
-                  <a href={`users/${follower.login}`}>
-                    <img
-                      src={`https://github.com/${follower.login}.png`}
-                      alt={follower.login}
-                    />
-                    <span>{follower.login}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </ProfileRelationsBoxWrapper>
+          <GithubSidebar type="following" githubUser={githubUser} />
+          <GithubSidebar type="followers" githubUser={githubUser} />
         </div>
       </MainGrid>
     </>
