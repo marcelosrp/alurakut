@@ -13,7 +13,7 @@ import { AlurakutMenu, OrkutNostalgicIconSet } from '../lib/AlurakutCommons'
 import 'react-toastify/dist/ReactToastify.css'
 
 export default function Home() {
-  const githubUser = 'marcelosrp'
+  const githubUser = process.env.NEXT_PUBLIC_GITHUB_USER
 
   const [comunidadeTitle, setComunidadeTitle] = useState('')
   const [comunidadeImageUrl, setComunidadeImageUrl] = useState('')

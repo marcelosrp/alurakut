@@ -39,6 +39,8 @@ const theme = {
   },
 }
 
+import '../assets/css/spinner.css'
+
 export default function App({ Component, pageProps }) {
   return (
     <>
