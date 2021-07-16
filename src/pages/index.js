@@ -13,25 +13,23 @@ import 'react-toastify/dist/ReactToastify.css'
 export default function Home() {
   const githubUser = 'marcelosrp'
 
-  const pessoasFavoritas = [
-    'juunegreiros',
-    'omariosouto',
-    'peas',
-    'rafaballerini',
-    'marcobrunodev',
-    'felipefialho',
-  ]
-
   const [comunidadeTitle, setComunidadeTitle] = useState('')
   const [comunidadeImageUrl, setComunidadeImageUrl] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [comunidades, setComunidades] = useState([])
   const [followers, setFollowers] = useState([])
+  const [following, setFollowing] = useState([])
 
   useEffect(() => {
     fetch(`http://api.github.com/users/${githubUser}/followers`)
       .then(response => response.json())
       .then(data => setFollowers(data))
+  }, [])
+
+  useEffect(() => {
+    fetch(`http://api.github.com/users/${githubUser}/following`)
+      .then(response => response.json())
+      .then(data => setFollowing(data))
   }, [])
 
   useEffect(() => {
@@ -147,18 +145,16 @@ export default function Home() {
           </ProfileRelationsBoxWrapper>
 
           <ProfileRelationsBoxWrapper>
-            <h2 className="smallTitle">
-              Pessoas da Comunidade ({pessoasFavoritas.length})
-            </h2>
+            <h2 className="smallTitle">Seguindo ({following.length})</h2>
             <ul>
-              {pessoasFavoritas.map((pessoa, key) => (
-                <li key={`${pessoa}-${key}`}>
-                  <a href={`users/${pessoa}`}>
+              {following.map(follower => (
+                <li key={`${follower.login}-${follower.id}`}>
+                  <a href={`users/${follower.login}`}>
                     <img
-                      src={`https://github.com/${pessoa}.png`}
-                      alt={pessoa}
+                      src={`https://github.com/${follower.login}.png`}
+                      alt={follower.login}
                     />
-                    <span>{pessoa}</span>
+                    <span>{follower.login}</span>
                   </a>
                 </li>
               ))}
