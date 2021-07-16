@@ -47,13 +47,15 @@ export default function GithubSidebar({ type, githubUser }) {
                   </li>
                 ))}
               </ul>
-              <button
-                type="button"
-                className="btn-vermais"
-                onClick={() => setIsActive(!isActive)}
-              >
-                {isActive ? 'Ver menos' : 'Ver mais'}
-              </button>
+              {following.length > 6 && (
+                <button
+                  type="button"
+                  className="btn-vermais"
+                  onClick={() => setIsActive(!isActive)}
+                >
+                  {isActive ? 'Ver menos' : 'Ver mais'}
+                </button>
+              )}
             </>
           )}
         </>
@@ -81,13 +83,15 @@ export default function GithubSidebar({ type, githubUser }) {
                   </li>
                 ))}
               </ul>
-              <button
-                type="button"
-                className="btn-vermais"
-                onClick={() => setIsActive(!isActive)}
-              >
-                {isActive ? 'Ver menos' : 'Ver mais'}
-              </button>
+              {followers.length > 6 && (
+                <button
+                  type="button"
+                  className="btn-vermais"
+                  onClick={() => setIsActive(!isActive)}
+                >
+                  {isActive ? 'Ver menos' : 'Ver mais'}
+                </button>
+              )}
             </>
           )}
         </>

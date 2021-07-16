@@ -1,6 +1,8 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { AlurakutStyles } from '../lib/AlurakutCommons'
 
+import 'react-toastify/dist/ReactToastify.css'
+
 const GlobalStyle = createGlobalStyle`
   * {
     margin: 0;
