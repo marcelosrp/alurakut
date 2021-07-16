@@ -3,32 +3,9 @@ import { useState, useEffect } from 'react'
 
 import MainGrid from '../components/MainGrid'
 import Box from '../components/Box'
+import ProfileSidebar from '../components/ProfileSidebar'
 import { ProfileRelationsBoxWrapper } from '../components/ProfileRelations'
-import {
-  AlurakutMenu,
-  AlurakutProfileSidebarMenuDefault,
-  OrkutNostalgicIconSet,
-} from '../lib/AlurakutCommons'
-
-function ProfileSidebar(props) {
-  return (
-    <Box as="aside">
-      <img
-        src={`https://github.com/${props.githubUser}.png`}
-        alt="avatar profile"
-        style={{ borderRadius: '8px' }}
-      />
-      <hr />
-
-      <a href={`https://github.com/${props.githubUser}`} className="boxLink">
-        {props.githubUser}
-      </a>
-
-      <hr />
-      <AlurakutProfileSidebarMenuDefault />
-    </Box>
-  )
-}
+import { AlurakutMenu, OrkutNostalgicIconSet } from '../lib/AlurakutCommons'
 
 export default function Home() {
   const githubUser = 'marcelosrp'
@@ -88,8 +65,6 @@ export default function Home() {
               title
               imageUrl
               creatorSlug
-              _status
-              _firstPublishedAt
             }
           }`,
       }),
