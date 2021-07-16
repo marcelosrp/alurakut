@@ -59,6 +59,16 @@ const Box = styled.div`
       cursor: not-allowed;
       opacity: 0.5;
     }
+
+    &.btn-vermais {
+      background-color: transparent;
+      color: #6f92bb;
+      padding: 10px 0 0 0;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 `
 

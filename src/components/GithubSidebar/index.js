@@ -7,6 +7,7 @@ export default function GithubSidebar({ type, githubUser }) {
   const [followers, setFollowers] = useState([])
   const [following, setFollowing] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [isActive, setIsActive] = useState(false)
 
   useEffect(() => {
     setIsLoading(true)
@@ -33,7 +34,7 @@ export default function GithubSidebar({ type, githubUser }) {
           ) : (
             <>
               <h2 className="smallTitle">Seguindo ({following.length})</h2>
-              <ul>
+              <ul className={`${isActive ? 'open' : ''}`}>
                 {following.map(user => (
                   <li key={`${user.login}-${user.id}`}>
                     <a href={`users/${user.login}`}>
@@ -46,6 +47,13 @@ export default function GithubSidebar({ type, githubUser }) {
                   </li>
                 ))}
               </ul>
+              <button
+                type="button"
+                className="btn-vermais"
+                onClick={() => setIsActive(!isActive)}
+              >
+                {isActive ? 'Ver menos' : 'Ver mais'}
+              </button>
             </>
           )}
         </>
@@ -60,7 +68,7 @@ export default function GithubSidebar({ type, githubUser }) {
           ) : (
             <>
               <h2 className="smallTitle">Seguidores ({followers.length})</h2>
-              <ul>
+              <ul className={`${isActive ? 'open' : ''}`}>
                 {followers.map(user => (
                   <li key={`${user.login}-${user.id}`}>
                     <a href={`users/${user.login}`}>
@@ -73,6 +81,13 @@ export default function GithubSidebar({ type, githubUser }) {
                   </li>
                 ))}
               </ul>
+              <button
+                type="button"
+                className="btn-vermais"
+                onClick={() => setIsActive(!isActive)}
+              >
+                {isActive ? 'Ver menos' : 'Ver mais'}
+              </button>
             </>
           )}
         </>
