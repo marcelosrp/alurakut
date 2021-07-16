@@ -19,18 +19,46 @@ export default function Home() {
     'felipefialho',
   ]
 
+  const [comunidadeTitle, setComunidadeTitle] = useState('')
+  const [comunidadeImageUrl, setComunidadeImageUrl] = useState('')
   const [comunidades, setComunidades] = useState([])
-
   const [followers, setFollowers] = useState([])
+
+  useEffect(() => {
+    fetch(`http://api.github.com/users/${githubUser}/followers`)
+      .then(response => response.json())
+      .then(data => setFollowers(data))
+  }, [])
+
+  useEffect(() => {
+    fetch('https://graphql.datocms.com/', {
+      method: 'POST',
+      headers: {
+        Authorization: process.env.NEXT_PUBLIC_DATOCMS_API_KEY,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        query: `query {
+              allCommunities {
+                id
+                title
+                imageUrl
+                creatorSlug
+              }
+            }`,
+      }),
+    })
+      .then(res => res.json())
+      .then(res => setComunidades(res.data.allCommunities))
+  }, [])
 
   function handleCriarComunidade(event) {
     event.preventDefault()
 
-    const dadosDoForm = new FormData(event.target)
-
     const comunidade = {
-      title: dadosDoForm.get('title'),
-      imageUrl: dadosDoForm.get('image'),
+      title: comunidadeTitle,
+      imageUrl: comunidadeImageUrl,
       creatorSlug: githubUser,
     }
 
@@ -43,35 +71,10 @@ export default function Home() {
     }).then(async res => {
       const data = await res.json()
       setComunidades([...comunidades, data.record])
+      setComunidadeTitle('')
+      setComunidadeImageUrl('')
     })
   }
-
-  useEffect(() => {
-    fetch(`http://api.github.com/users/${githubUser}/followers`)
-      .then(response => response.json())
-      .then(data => setFollowers(data))
-
-    fetch('https://graphql.datocms.com/', {
-      method: 'POST',
-      headers: {
-        Authorization: process.env.NEXT_PUBLIC_DATOCMS_API_KEY,
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify({
-        query: `query {
-            allCommunities {
-              id
-              title
-              imageUrl
-              creatorSlug
-            }
-          }`,
-      }),
-    })
-      .then(res => res.json())
-      .then(res => setComunidades(res.data.allCommunities))
-  }, [])
 
   return (
     <>
@@ -93,6 +96,8 @@ export default function Home() {
                   type="text"
                   placeholder="Qual vai ser o nome da sua comunidade?"
                   name="title"
+                  value={comunidadeTitle}
+                  onChange={e => setComunidadeTitle(e.target.value)}
                 />
               </div>
               <div>
@@ -100,6 +105,8 @@ export default function Home() {
                   type="text"
                   placeholder="Coloque uma URL para usarmos de capa"
                   name="image"
+                  value={comunidadeImageUrl}
+                  onChange={e => setComunidadeImageUrl(e.target.value)}
                 />
               </div>
               <button type="submit">Criar comunidade</button>
