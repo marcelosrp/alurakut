@@ -1,4 +1,5 @@
 /* E-mail Dato CMS: voyetig768@eyeremind.com */
+import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 import nookies from 'nookies'
@@ -76,6 +77,9 @@ export default function Home(props) {
 
   return (
     <>
+      <Head>
+        <title>Alurakut :: Feed</title>
+      </Head>
       <ToastContainer position="bottom-right" />
       <AlurakutMenu githubUser={githubUser} />
       <MainGrid>

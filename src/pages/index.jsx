@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { ToastContainer, toast } from 'react-toastify'
@@ -35,6 +36,9 @@ export default function LoginScreen() {
 
   return (
     <>
+      <Head>
+        <title>Alurakut :: Login</title>
+      </Head>
       <ToastContainer position="bottom-right" />
       <main
         style={{
