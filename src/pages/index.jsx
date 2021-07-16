@@ -1,6 +1,8 @@
 /* E-mail Dato CMS: voyetig768@eyeremind.com */
 import { useState, useEffect } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
+import nookies from 'nookies'
+import jwt from 'jsonwebtoken'
 
 import MainGrid from '../components/MainGrid'
 import Box from '../components/Box'
@@ -12,8 +14,8 @@ import { AlurakutMenu, OrkutNostalgicIconSet } from '../lib/AlurakutCommons'
 
 import 'react-toastify/dist/ReactToastify.css'
 
-export default function Home() {
-  const githubUser = process.env.NEXT_PUBLIC_GITHUB_USER
+export default function Home(props) {
+  const githubUser = props.githubUser
 
   const [comunidadeTitle, setComunidadeTitle] = useState('')
   const [comunidadeImageUrl, setComunidadeImageUrl] = useState('')
@@ -138,4 +140,34 @@ export default function Home() {
       </MainGrid>
     </>
   )
+}
+
+export async function getServerSideProps(context) {
+  const token = nookies.get(context).USER_TOKEN
+
+  const { isAuthenticated } = await fetch(
+    'https://alurakut.vercel.app/api/auth',
+    {
+      headers: {
+        Authorization: token,
+      },
+    },
+  ).then(res => res.json())
+
+  if (!isAuthenticated) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+
+  const { githubUser } = jwt.decode(token)
+
+  return {
+    props: {
+      githubUser,
+    },
+  }
 }
