@@ -8,9 +8,8 @@ import jwt from 'jsonwebtoken'
 import MainGrid from '../components/MainGrid'
 import Box from '../components/Box'
 import ProfileSidebar from '../components/ProfileSidebar'
-import { ProfileRelationsBoxWrapper } from '../components/ProfileRelations'
 import GithubSidebar from '../components/GithubSidebar'
-
+import { ProfileRelationsBoxWrapper } from '../components/ProfileRelations'
 import { AlurakutMenu, OrkutNostalgicIconSet } from '../lib/AlurakutCommons'
 
 export default function Home(props) {
@@ -156,16 +155,14 @@ export async function getServerSideProps(context) {
     },
   ).then(res => res.json())
 
-  console.log(isAuthenticated)
-
-  /* if (!isAuthenticated) {
+  if (!isAuthenticated) {
     return {
       redirect: {
         destination: '/',
         permanent: false,
       },
     }
-  } */
+  }
 
   const { githubUser } = jwt.decode(token)
 

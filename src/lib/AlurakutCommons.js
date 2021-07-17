@@ -1,6 +1,8 @@
 import React from 'react'
-import styled, { css } from 'styled-components'
+import { useRouter } from 'next/router'
 import NextLink from 'next/link'
+import styled, { css } from 'styled-components'
+import nookies from 'nookies'
 
 const BASE_URL = 'http://alurakut.vercel.app/'
 const v = '1'
@@ -18,6 +20,16 @@ function Link({ href, children, ...props }) {
 // ================================================================================================================
 export function AlurakutMenu({ githubUser }) {
   const [isMenuOpen, setMenuState] = React.useState(false)
+  const router = useRouter()
+
+  // Logout
+  const handleLogout = e => {
+    e.preventDefault()
+
+    nookies.destroy(null, 'USER_TOKEN')
+    router.push('/')
+  }
+
   return (
     <AlurakutMenu.Wrapper isMenuOpen={isMenuOpen}>
       <div className="container">
@@ -39,16 +51,20 @@ export function AlurakutMenu({ githubUser }) {
         </nav>
 
         <nav>
-          <a href={`/logout`}>Sair</a>
+          <a href="/#" onClick={handleLogout}>
+            Sair
+          </a>
           <div>
             <input placeholder="Pesquisar no Orkut" />
           </div>
         </nav>
 
         <button onClick={() => setMenuState(!isMenuOpen)}>
-          {isMenuOpen && <img src={`${BASE_URL}/icons/menu-open.svg?v=${v}`} />}
+          {isMenuOpen && (
+            <img src={`${BASE_URL}/icons/menu-open.svg?v=${v}`} alt="ico" />
+          )}
           {!isMenuOpen && (
-            <img src={`${BASE_URL}/icons/menu-closed.svg?v=${v}`} />
+            <img src={`${BASE_URL}/icons/menu-closed.svg?v=${v}`} alt="ico" />
           )}
         </button>
       </div>
@@ -179,6 +195,7 @@ function AlurakutMenuProfileSidebar({ githubUser }) {
         <img
           src={`https://github.com/${githubUser}.png`}
           style={{ borderRadius: '8px' }}
+          alt="avatar"
         />
         <hr />
         <p>
@@ -198,34 +215,43 @@ function AlurakutMenuProfileSidebar({ githubUser }) {
 // AlurakutProfileSidebarMenuDefault
 // ================================================================================================================
 export function AlurakutProfileSidebarMenuDefault() {
+  const router = useRouter()
+
+  // Logout
+  const handleLogout = e => {
+    e.preventDefault()
+
+    nookies.destroy(null, 'USER_TOKEN')
+    router.push('/')
+  }
   return (
     <AlurakutProfileSidebarMenuDefault.Wrapper>
       <nav>
         <a href="/">
-          <img src={`${BASE_URL}/icons/user.svg`} />
+          <img src={`${BASE_URL}/icons/user.svg`} alt="Perfil" />
           Perfil
         </a>
         <a href="/">
-          <img src={`${BASE_URL}/icons/book.svg`} />
+          <img src={`${BASE_URL}/icons/book.svg`} alt="Recados" />
           Recados
         </a>
         <a href="/">
-          <img src={`${BASE_URL}/icons/camera.svg`} />
+          <img src={`${BASE_URL}/icons/camera.svg`} alt="Fotos" />
           Fotos
         </a>
         <a href="/">
-          <img src={`${BASE_URL}/icons/sun.svg`} />
+          <img src={`${BASE_URL}/icons/sun.svg`} alt="Depoimentos" />
           Depoimentos
         </a>
       </nav>
       <hr />
       <nav>
         <a href="/">
-          <img src={`${BASE_URL}/icons/plus.svg`} />
+          <img src={`${BASE_URL}/icons/plus.svg`} alt="Github Trends" />
           GitHub Trends
         </a>
-        <a href="/logout">
-          <img src={`${BASE_URL}//icons/logout.svg`} />
+        <a href="/#" onClick={handleLogout}>
+          <img src={`${BASE_URL}//icons/logout.svg`} alt="sair" />
           Sair
         </a>
       </nav>
