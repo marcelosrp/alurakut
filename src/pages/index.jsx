@@ -28,6 +28,7 @@ export default function LoginScreen() {
         })
         if (!githubUser || githubUser.length === 0) {
           toast.error('Ops! Algo deu errado, tente novamente!')
+          return
         }
         router.push('/feed')
       })
