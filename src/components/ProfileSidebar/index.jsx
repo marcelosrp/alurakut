@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import Box from '../Box'
 import { AlurakutProfileSidebarMenuDefault } from '../../lib/AlurakutCommons'
 
@@ -19,4 +20,8 @@ export default function ProfileSidebar({ githubUser }) {
       <AlurakutProfileSidebarMenuDefault />
     </Box>
   )
+}
+
+ProfileSidebar.propTypes = {
+  githubUser: PropTypes.string.isRequired,
 }

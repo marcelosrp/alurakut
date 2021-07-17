@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import Link from 'next/link'
 import Spinner from '../Spinner'
 import { ProfileRelationsBoxWrapper } from '../ProfileRelations'
@@ -108,4 +109,9 @@ export default function GithubSidebar({ type, githubUser }) {
   return (
     <ProfileRelationsBoxWrapper>{buildUIGithub()}</ProfileRelationsBoxWrapper>
   )
+}
+
+GithubSidebar.propTypes = {
+  type: PropTypes.string.isRequired,
+  githubUser: PropTypes.string.isRequired,
 }
