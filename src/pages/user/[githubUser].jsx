@@ -6,6 +6,7 @@ import Box from '../../components/Box'
 import ProfileSidebar from '../../components/ProfileSidebar'
 import GithubSidebar from '../../components/GithubSidebar'
 import Spinner from '../../components/Spinner'
+import BemVindo from '../../components/BemVindo'
 import { AlurakutMenu, OrkutNostalgicIconSet } from '../../lib/AlurakutCommons'
 
 export default function User(props) {
@@ -32,7 +33,7 @@ export default function User(props) {
         </div>
         <div className="welcomeArea" style={{ gridArea: 'welcomeArea' }}>
           <Box>
-            <h1 className="title">Bem vindo, {githubUser}</h1>
+            <BemVindo githubUser={githubUser} />
             <OrkutNostalgicIconSet />
           </Box>
         </div>

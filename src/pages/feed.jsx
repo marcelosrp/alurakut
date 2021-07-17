@@ -8,6 +8,7 @@ import MainGrid from '../components/MainGrid'
 import Box from '../components/Box'
 import ProfileSidebar from '../components/ProfileSidebar'
 import GithubSidebar from '../components/GithubSidebar'
+import BemVindo from '../components/BemVindo'
 import { ProfileRelationsBoxWrapper } from '../components/ProfileRelations'
 import { AlurakutMenu, OrkutNostalgicIconSet } from '../lib/AlurakutCommons'
 
@@ -86,7 +87,7 @@ export default function Home(props) {
         </div>
         <div className="welcomeArea" style={{ gridArea: 'welcomeArea' }}>
           <Box>
-            <h1 className="title">Bem vindo, {githubUser}</h1>
+            <BemVindo githubUser={githubUser} />
             <OrkutNostalgicIconSet />
           </Box>
           <Box>

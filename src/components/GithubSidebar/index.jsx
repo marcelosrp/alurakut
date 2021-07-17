@@ -49,6 +49,7 @@ export default function GithubSidebar({ type, githubUser }) {
                   </li>
                 ))}
               </ul>
+              <hr />
               {following.length > 6 && (
                 <button
                   type="button"
@@ -87,6 +88,7 @@ export default function GithubSidebar({ type, githubUser }) {
                   </li>
                 ))}
               </ul>
+              <hr />
               {followers.length > 6 && (
                 <button
                   type="button"
