@@ -18,3 +18,5 @@ export default async function getRequest(req, res) {
     message: 'Ainda não tem nada no GET mas no POST tem!',
   })
 }
+
+/* E-mail Dato CMS: voyetig768@eyeremind.com */

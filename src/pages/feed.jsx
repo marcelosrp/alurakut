@@ -1,4 +1,3 @@
-/* E-mail Dato CMS: voyetig768@eyeremind.com */
 import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
@@ -87,7 +86,7 @@ export default function Home(props) {
         </div>
         <div className="welcomeArea" style={{ gridArea: 'welcomeArea' }}>
           <Box>
-            <h1 className="title">Bem vindo(a)</h1>
+            <h1 className="title">Bem vindo, {githubUser}</h1>
             <OrkutNostalgicIconSet />
           </Box>
           <Box>

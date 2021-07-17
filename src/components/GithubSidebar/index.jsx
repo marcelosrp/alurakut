@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-
+import Link from 'next/link'
 import Spinner from '../Spinner'
 import { ProfileRelationsBoxWrapper } from '../ProfileRelations'
 
@@ -15,7 +15,7 @@ export default function GithubSidebar({ type, githubUser }) {
       .then(response => response.json())
       .then(data => setFollowers(data))
       .finally(() => setIsLoading(false))
-  }, [])
+  }, [githubUser])
 
   useEffect(() => {
     setIsLoading(true)
@@ -23,7 +23,7 @@ export default function GithubSidebar({ type, githubUser }) {
       .then(response => response.json())
       .then(data => setFollowing(data))
       .finally(() => setIsLoading(false))
-  }, [])
+  }, [githubUser])
 
   function buildUIGithub() {
     if (type === 'following') {
@@ -37,13 +37,15 @@ export default function GithubSidebar({ type, githubUser }) {
               <ul className={`${isActive ? 'open' : ''}`}>
                 {following.map(user => (
                   <li key={`${user.login}-${user.id}`}>
-                    <a href={`users/${user.login}`}>
-                      <img
-                        src={`https://github.com/${user.login}.png`}
-                        alt={user.login}
-                      />
-                      <span>{user.login}</span>
-                    </a>
+                    <Link href={`/user/${user.login}`}>
+                      <a>
+                        <img
+                          src={`https://github.com/${user.login}.png`}
+                          alt={user.login}
+                        />
+                        <span>{user.login}</span>
+                      </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -73,13 +75,15 @@ export default function GithubSidebar({ type, githubUser }) {
               <ul className={`${isActive ? 'open' : ''}`}>
                 {followers.map(user => (
                   <li key={`${user.login}-${user.id}`}>
-                    <a href={`users/${user.login}`}>
-                      <img
-                        src={`https://github.com/${user.login}.png`}
-                        alt={user.login}
-                      />
-                      <span>{user.login}</span>
-                    </a>
+                    <Link href={`/user/${user.login}`}>
+                      <a>
+                        <img
+                          src={`https://github.com/${user.login}.png`}
+                          alt={user.login}
+                        />
+                        <span>{user.login}</span>
+                      </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
