@@ -52,6 +52,11 @@ export default function Home(props) {
       creatorSlug: githubUser,
     }
 
+    if (comunidadeTitle === '' || comunidadeImageUrl === '') {
+      toast.error('Preencha corretamente os campos da Comunidade')
+      return
+    }
+
     setIsLoading(true)
 
     fetch('/api/comunidades', {
