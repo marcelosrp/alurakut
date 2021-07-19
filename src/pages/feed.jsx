@@ -1,8 +1,9 @@
-import { useContext } from 'react'
-import { GlobalContext } from '../context'
+// import { useContext } from 'react'
+// import { GlobalContext } from '../context'
 import Head from 'next/head'
 import { ToastContainer } from 'react-toastify'
 import nookies from 'nookies'
+import jwt from 'jsonwebtoken'
 
 import MainGrid from '../components/MainGrid'
 import Box from '../components/Box'
@@ -12,11 +13,12 @@ import BemVindo from '../components/BemVindo'
 import CriarDepoimento from '../components/Depoimentos/criar'
 import CriarComunidade from '../components/Comunidades/criar'
 import ListarComunidades from '../components/Comunidades/listar'
+import ListarDepoimentos from '../components/Depoimentos/listar'
 import { ProfileRelationsBoxWrapper } from '../components/ProfileRelations'
 import { AlurakutMenu, OrkutNostalgicIconSet } from '../lib/AlurakutCommons'
 
-export default function Home() {
-  const { githubUser } = useContext(GlobalContext)
+export default function Home(props) {
+  const githubUser = props.githubUser
 
   return (
     <>
@@ -39,6 +41,9 @@ export default function Home() {
           </Box>
           <Box>
             <CriarDepoimento />
+          </Box>
+          <Box>
+            <ListarDepoimentos />
           </Box>
         </div>
         <div
@@ -78,7 +83,11 @@ export async function getServerSideProps(context) {
     }
   }
 
+  const { githubUser } = jwt.decode(token)
+
   return {
-    props: {},
+    props: {
+      githubUser,
+    },
   }
 }

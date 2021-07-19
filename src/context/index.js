@@ -18,9 +18,8 @@ export const GlobalStorage = ({ children }) => {
   const [message, setMessage] = useState('')
   const [depoimentos, setDepoimentos] = useState([])
 
-  const [githubUser, setGithubUser] = useState('')
-
   useEffect(() => {
+    // Fetch Comunidades
     fetch('https://graphql.datocms.com/', {
       method: 'POST',
       headers: {
@@ -44,9 +43,29 @@ export const GlobalStorage = ({ children }) => {
   }, [])
 
   useEffect(() => {
-    const token = nookies.get().USER_TOKEN
-    const { githubUser } = jwt.decode(token)
-    setGithubUser(githubUser)
+    // Fetch Depoimentos
+    setIsLoadingDepoimento(true)
+    fetch('https://graphql.datocms.com/', {
+      method: 'POST',
+      headers: {
+        Authorization: process.env.NEXT_PUBLIC_DATOCMS_API_KEY,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        query: `query {
+              allTestimonials {
+                id
+                message
+                creatorSlug
+                _createdAt
+              }
+            }`,
+      }),
+    })
+      .then(res => res.json())
+      .then(res => setDepoimentos(res.data.allTestimonials))
+      .finally(() => setIsLoadingDepoimento(false))
   }, [])
 
   const handleMessageDepoimento = event => setMessage(event.target.value)
@@ -54,14 +73,17 @@ export const GlobalStorage = ({ children }) => {
   const handleCriarDepoimento = event => {
     event.preventDefault()
 
-    const depoimento = {
-      message: message,
-      creatorSlug: githubUser,
-    }
-
     if (message === '') {
       toast.error('Preencha corretamente os campos da Comunidade')
       return
+    }
+
+    const token = nookies.get().USER_TOKEN
+    const { githubUser } = jwt.decode(token)
+
+    const depoimento = {
+      message: message,
+      creatorSlug: githubUser,
     }
 
     setIsLoadingDepoimento(true)
@@ -93,15 +115,18 @@ export const GlobalStorage = ({ children }) => {
   const handleCriarComunidade = event => {
     event.preventDefault()
 
+    if (comunidadeTitle === '' || comunidadeImageUrl === '') {
+      toast.error('Preencha corretamente os campos da Comunidade')
+      return
+    }
+
+    const token = nookies.get().USER_TOKEN
+    const { githubUser } = jwt.decode(token)
+
     const comunidade = {
       title: comunidadeTitle,
       imageUrl: comunidadeImageUrl,
       creatorSlug: githubUser,
-    }
-
-    if (comunidadeTitle === '' || comunidadeImageUrl === '') {
-      toast.error('Preencha corretamente os campos da Comunidade')
-      return
     }
 
     setIsLoadingComunidade(true)
@@ -134,7 +159,6 @@ export const GlobalStorage = ({ children }) => {
         handleCriarComunidade,
         handleComunidadeTitle,
         handleComunidadeImageUrl,
-        githubUser,
         isLoadingComunidade,
         isLoadingDepoimento,
         message,
@@ -142,6 +166,7 @@ export const GlobalStorage = ({ children }) => {
         comunidadeTitle,
         comunidadeImageUrl,
         comunidades,
+        depoimentos,
       }}
     >
       {children}
