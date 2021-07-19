@@ -74,7 +74,7 @@ export const GlobalStorage = ({ children }) => {
     event.preventDefault()
 
     if (message === '') {
-      toast.error('Preencha corretamente os campos da Comunidade')
+      toast.error('É necessário escrever uma mensagem!')
       return
     }
 
