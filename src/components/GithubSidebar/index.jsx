@@ -11,19 +11,23 @@ export default function GithubSidebar({ type, githubUser }) {
   const [isActive, setIsActive] = useState(false)
 
   useEffect(() => {
-    setIsLoading(true)
-    fetch(`https://api.github.com/users/${githubUser}/${type}`)
-      .then(response => response.json())
-      .then(data => setFollowers(data))
-      .finally(() => setIsLoading(false))
+    if (githubUser) {
+      setIsLoading(true)
+      fetch(`https://api.github.com/users/${githubUser}/${type}`)
+        .then(response => response.json())
+        .then(data => setFollowers(data))
+        .finally(() => setIsLoading(false))
+    }
   }, [githubUser])
 
   useEffect(() => {
-    setIsLoading(true)
-    fetch(`https://api.github.com/users/${githubUser}/${type}`)
-      .then(response => response.json())
-      .then(data => setFollowing(data))
-      .finally(() => setIsLoading(false))
+    if (githubUser) {
+      setIsLoading(true)
+      fetch(`https://api.github.com/users/${githubUser}/${type}`)
+        .then(response => response.json())
+        .then(data => setFollowing(data))
+        .finally(() => setIsLoading(false))
+    }
   }, [githubUser])
 
   function buildUIGithub() {

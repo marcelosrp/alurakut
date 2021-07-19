@@ -1,3 +1,4 @@
+import { GlobalStorage } from '../context'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { AlurakutStyles } from '../lib/AlurakutCommons'
 
@@ -48,7 +49,9 @@ export default function App({ Component, pageProps }) {
     <>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
+        <GlobalStorage>
+          <Component {...pageProps} />
+        </GlobalStorage>
       </ThemeProvider>
     </>
   )
